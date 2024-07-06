@@ -1,10 +1,21 @@
 import tkinter as tk
 from geopy.geocoders import Nominatim
-from tkinter import ttk, messagebox
 from timezonefinder import TimezoneFinder
 from datetime import datetime
 import requests
 import pytz
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 root = tk.Tk()
 root.title("Weather App")
@@ -25,7 +36,7 @@ def getweather():
     clock.config(text=current_time)
     name.config(text="CURRENT WEATHER")
 
-    api = f"https://api.openweathermap.org/data/2.5/weather?lat={location.latitude}&lon={location.longitude}&appid="f"{"your api key"}"
+    api = f"https://api.openweathermap.org/data/2.5/weather?lat={location.latitude}&lon={location.longitude}&appid="f"{"f2320c78ee4d83c32364d629e0211f12"}"
     json_data = requests.get(api).json()
     condition = json_data["weather"][0]['main']
     description = json_data["weather"][0]['description']
@@ -42,7 +53,7 @@ def getweather():
     p.configure(text=pressure)
 
 
-search_img = tk.PhotoImage(file="search.png")
+search_img = tk.PhotoImage(file=resource_path("search.png"))
 myimage = tk.Label(root, image=search_img)
 myimage.place(x=20, y=20)
 
@@ -50,15 +61,15 @@ textfield = tk.Entry(root, justify="center", width=17, font=("poppins", 25, "bol
 textfield.place(x=50, y=40)
 textfield.focus()
 
-search_icon = tk.PhotoImage(file="search_icon.png")
+search_icon = tk.PhotoImage(file=resource_path("search_icon.png"))
 myimage_icon = tk.Button(image=search_icon, border=0, cursor="hand2", bg="#404040", command=getweather)
 myimage_icon.place(x=400, y=34)
 
-logo_image = tk.PhotoImage(file="logo.png")
+logo_image = tk.PhotoImage(file=resource_path("logo.png"))
 logo = tk.Label(image=logo_image)
 logo.place(x=150, y=100)
 
-Frame_image = tk.PhotoImage(file="box.png")
+Frame_image = tk.PhotoImage(file=resource_path("box.png"))
 frame_myimage = tk.Label(image=Frame_image)
 frame_myimage.pack(padx=5, pady=5, side=tk.BOTTOM)
 
